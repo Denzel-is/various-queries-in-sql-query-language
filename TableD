@@ -1,0 +1,29 @@
+CREATE DATABASE TableD;
+
+USE TableD;
+
+CREATE TABLE Teachers (
+  TeacherID INT PRIMARY KEY,
+  FirstName VARCHAR(50) NOT NULL,
+  LastName VARCHAR(50) NOT NULL,
+  Salary INT NOT NULL,
+  HireDate DATE NOT NULL
+);
+
+CREATE TABLE Groups (
+  GroupID INT PRIMARY KEY,
+  GroupName VARCHAR(50) NOT NULL,
+  FacultyID INT NOT NULL,
+  DepartmentID INT NOT NULL
+);
+
+CREATE TABLE Faculties (
+  FacultyID INT PRIMARY KEY,
+  FacultyName VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE Departments (
+  DepartmentID INT PRIMARY KEY,
+  DepartmentName VARCHAR(50) NOT NULL,
+  FacultyID INT NOT NULL
+);
