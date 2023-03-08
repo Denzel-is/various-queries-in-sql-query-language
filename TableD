@@ -27,3 +27,35 @@ CREATE TABLE Departments (
   DepartmentName VARCHAR(50) NOT NULL,
   FacultyID INT NOT NULL
 );
+
+
+--next variant
+CREATE DATABASE Academy;
+
+USE Academy;
+
+CREATE TABLE Teachers (
+  TeacherID INT PRIMARY KEY,
+  FirstName VARCHAR(50),
+  LastName VARCHAR(50),
+  Salary DECIMAL(10, 2),
+  HireDate DATE
+);
+
+CREATE TABLE Groups (
+  GroupID INT PRIMARY KEY,
+  GroupName VARCHAR(50),
+  FacultyID INT,
+  DepartmentID INT
+);
+
+CREATE TABLE Faculties (
+  FacultyID INT PRIMARY KEY,
+  FacultyName VARCHAR(50)
+);
+
+CREATE TABLE Departments (
+  DepartmentID INT PRIMARY KEY,
+  DepartmentName VARCHAR(50),
+  FacultyID INT
+);
