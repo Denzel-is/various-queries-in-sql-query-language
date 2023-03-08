@@ -1,0 +1,115 @@
+
+SELECT DISTINCT L.LectureRooms
+
+FROM Teachers  AS T
+JOIN Lectures L ON T.TeacherId = L.TeacherId
+WHERE T.Name = 'Edward' AND T.Surname = 'Hopper';
+
+SELECT Teachers.Surname
+
+FROM Teachers AS T, Assistants AS A,Curators AS C,Lectures AS L,Groups AS G
+
+JOIN Assistants ON TeachersId = A.TeacherId
+JOIN Curators ON TeachersId = C.teacherId
+JOIN Lectures ON TeachersId = L.teacherId
+JOIN Groups ON L.GroupId = GroupsId
+WHERE G.name = 'F505'
+
+
+SELECT DISTINCT Subjects.SubjectName
+
+FROM Teachers AS T, Assistants AS A,Curators AS C,Lectures AS L,Groups AS G
+INNER JOIN Teachers ON L.TeacherId = T.teacherId
+INNER JOIN Groups   ON L.GroupId   = G.GroupId
+INNER JOIN Subjects ON L.SubjectId = S.SubjectId
+WHERE G.Course = 5  AND T.Name = 'Alex' AND T.Surname = 'Carmack';
+
+SELECT DISTINCT Teachers.Surname
+
+ FROM Teachers AS T,Lectures AS L
+ JOIN Lectures ON T.teacherId = L.TeacherId
+ WHERE DayOfWeek(L.Schedues) != 2;
+
+SELECT Auditories.Name, Auditories.Groups
+FROM Auditories AS Aud,Lectures AS L
+WHERE Aud.Id NOT IN(
+SELECT L.AuditoryID
+FROM L
+WHERE L.Week = 2 AND L.DayOfWeek = 'Среда' AND L.Lecturies = 3
+);
+
+SELECT Teachers.Name, Teachers.Surname FROM Teachers
+
+FROM T AS T,Departments AS D,Faculties AS F,Curators AS C,Groups AS G
+JOIN F ON T.FacultyId = F.Id
+JOIN D ON T.DepartmentId = D.Id
+WHERE F.Name = 'Computer Science' AND T.Id NOT IN(
+SELECT T.Id FROM C
+JOIN G ON C.GroupId = G.Id
+JOIN D ON Groups.DepartmentId = Departments.id
+WHERE D.Name = 'Software Development'
+);
+
+SELECT DISTINCT Building
+FROM Faculties AS F,Departments AS D,Audiences AS A
+JOIN D ON F.FacultyId = D.FacultyId
+JOIN A ON D.DepartmentId = A.DepartmentId;
+ 
+
+SELECT
+FROM T AS T,Departments AS D,Faculties AS F,Curators AS C,Groups AS G
+(
+FROM Deans 
+ORDER BY Id
+)AS D
+
+LEFT JOIN (
+ FROM Heads 
+ORDER BY Id
+) AS H
+
+ ON D.DacultyId = H.FacultyId
+
+LEFT JOIN (
+FROM T ORDER BY Id
+) T 
+ON H.DepartmentId = T.DepartmentId
+
+LEFT JOIN (
+ FROM C ORDER BY Id
+) C 
+ON T.Id = C.TeacherId
+
+LEFT JOIN (
+FROM A ORDER BY Id
+) A
+ ON C.Id = A.CuratorId
+ORDER BY D.Id, H.Id, T.Id, C.Id, A.Id;
+
+SELECT DISTINCT DayOfWeek
+FROM Classes
+WHERE Building = '6' AND Auditorium IN ('A311', 'A104');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
