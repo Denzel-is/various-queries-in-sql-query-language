@@ -1,0 +1,35 @@
+SELECT department_id, department_name, faculty_id
+FROM departments
+ORDER BY Departmentid DESC;
+
+SELECT group_name AS "Group Name", rating AS "Group Rating"
+FROM groups;
+SELECT last_name, (salary*100/(salary+bonus)) AS "Salary %", (bonus*100/(salary+bonus)) AS "Bonus %"
+
+FROM teachers;
+SELECT CONCAT("The dean of faculty ", faculty_name, " is ", dean) AS "Faculty Information"
+FROM faculties;
+
+SELECT last_name
+FROM teachers
+WHERE title = 'professor' AND salary > 1050;SELECT department_name
+
+FROM departments
+WHERE funding < 11000 OR funding > 25000;
+SELECT faculty_name
+
+FROM faculties
+WHERE faculty_name != 'Computer Science';
+SELECT last_name, title
+FROM teachers
+
+WHERE title != 'professor';
+SELECT last_name, title, salary, bonus
+FROM teachers
+
+WHERE title = 'assistant' AND bonus BETWEEN 160 AND 550;
+SELECT last_name, title
+FROM teachers
+
+WHERE hire_date < '2000-01-01';SELECT DepartmentName, DepartmentHead, DepartmentBudget
+FROM Departments ORDER BY DepartmentBudget DESC;
