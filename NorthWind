@@ -1,0 +1,69 @@
+use NorthWind
+GO 
+
+-- Определить покупателя, сделавшего самый поздний заказ
+SELECT TOP 1 c.CustomerID, c.CompanyName, 
+c.ContactName, c.ContactTitle, c.Address, 
+c.City, c.Region, c.PostalCode, c.Country, 
+c.Phone, c.Fax, o.OrderDate, o.EmployeeID
+FROM Customers c
+JOIN Orders o ON c.CustomerID = o.CustomerID
+ORDER BY o.OrderDate DESC;
+
+-- Для покупателя
+SELECT c.CustomerID, c.CompanyName, c.ContactName, c.ContactTitle, 
+c.Address, c.City, c.Region, c.PostalCode, c.Country, c.Phone, c.Fax, o.OrderDate
+FROM Customers c
+JOIN Orders o ON c.CustomerID = o.CustomerID
+WHERE o.OrderDate = (SELECT MAX(OrderDate) FROM Orders);
+
+-- Для сотрудника
+SELECT e.EmployeeID, e.FirstName, e.LastName, e.Title, e.TitleOfCourtesy, 
+e.BirthDate, e.HireDate, e.Address, e.City, e.Region, e.PostalCode, e.Country, 
+e.HomePhone, e.Extension, e.Photo, e.Notes, e.ReportsTo
+FROM Employees e
+JOIN Orders o ON e.EmployeeID = o.EmployeeID
+WHERE o.OrderDate = (SELECT MAX(OrderDate) FROM Orders);
+
+-- Выведите перечень  товаров заказа, их цены, 
+-- количества, стоимость с помощью представления 
+-- vOrderDetailsAll (отсортируйте по названию товара).
+SELECT ProductName, UnitPrice, Quantity, Discount, (UnitPrice * Quantity * (1 - Discount)) AS TotalPrice
+FROM vOrderDetailsAll
+WHERE OrderID = (SELECT TOP 1 OrderID FROM Orders ORDER BY OrderDate DESC)
+ORDER BY ProductName;
+
+-- Расчитайте и выведите полную стоимость заказа.
+SELECT SUM(UnitPrice * Quantity * (1 - Discount)) AS TotalCost
+FROM vOrderDetailsAll
+WHERE OrderID = (SELECT TOP 1 OrderID FROM Orders ORDER BY OrderDate DESC);
+
+
+-- Напишите скрипт для базы Norhwind, определющий покупателя, сделавшего 
+-- наиболее дорогостоящий заказ. Выведите полную информацию о покупателе и 
+-- перечислите его заказы по возрастанию даты с указанием общей суммы каждого. Выведите общую сумму заказов.
+SELECT c.CustomerID, c.ContactName, c.CompanyName, c.Phone, o.OrderID, o.OrderDate, SUM(od.Quantity * od.UnitPrice) AS OrderTotal
+FROM Customers c
+JOIN Orders o ON c.CustomerID = o.CustomerID
+JOIN OrderDetails od ON o.OrderID = od.OrderID
+WHERE o.OrderDate = (SELECT MAX(OrderDate) FROM Orders)
+GROUP BY c.CustomerID, c.ContactName, c.CompanyName, c.Phone, o.OrderID, o.OrderDate
+ORDER BY o.OrderDate
+
+-- 3 наиболее часто заказываемых продукта
+
+SELECT p.ProductName, SUM(od.Quantity) AS TotalQuantity
+FROM OrderDetails od
+JOIN Products p ON od.ProductID = p.ProductID
+GROUP BY p.ProductName
+ORDER BY TotalQuantity DESC
+LIMIT 3 -- лимит, который указывает максимальное количество элементов, которые могут быть выведены
+
+-- Покупателя (покупателей), сделавших наибольшее число заказов
+
+SELECT c.CustomerID, c.CompanyName, COUNT(o.OrderID) AS OrderCount
+FROM Customers c
+JOIN Orders o ON c.CustomerID = o.CustomerID
+GROUP BY c.CustomerID, c.CompanyName
+ORDER BY OrderCount DESC
+LIMIT 1 -- тоже лимитит макс. количество выводимых элементов
