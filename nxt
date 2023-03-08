@@ -1,0 +1,55 @@
+
+
+SELECT DISTINCT lectureRooms.room_name
+FROM rooms
+JOIN timetable ON timetable.room_id = rooms.room_id
+JOIN lecturers ON lecturers.lecturer_id = timetable.lecturer_id
+WHERE lecturers.lecturer_name = 'Edward Hopper';
+
+SELECT assistants.assistant_surname
+FROM assistants
+JOIN timetable ON timetable.assistant_id = assistants.assistant_id
+JOIN groups ON groups.group_id = timetable.group_id
+WHERE groups.group_name = 'F505';
+
+SELECT DISTINCT courses.course_name
+FROM courses
+JOIN timetable ON timetable.course_id = courses.course_id
+JOIN lecturers ON lecturers.lecturer_id = timetable.lecturer_id
+JOIN groups ON groups.group_id = timetable.group_id
+WHERE lecturers.lecturer_name = 'Alex Carmack' AND groups.group_year = 5;
+
+SELECT DISTINCT lecturers.lecturer_surname
+FROM lecturers
+JOIN timetable ON timetable.lecturer_id = lecturers.lecturer_id
+WHERE timetable.weekday != 'Monday';
+
+SELECT DISTINCT CONCAT(rooms.room_name, ', корпус ', rooms.building_id) AS room_location
+FROM rooms
+LEFT JOIN timetable ON timetable.room_id = rooms.room_id
+WHERE timetable.weekday = 'Wednesday' AND timetable.lesson_number = 3 AND (rooms.room_name LIKE 'A311' OR rooms.room_name LIKE 'A104') AND rooms.building_id = 6 AND timetable.group_id IS NULL;
+
+SELECT DISTINCT lecturers.lecturer_name
+FROM lecturers
+JOIN departments ON departments.department_id = lecturers.department_id
+JOIN faculties ON faculties.faculty_id = departments.faculty_id
+LEFT JOIN groups ON groups.curator_id = lecturers.lecturer_id
+WHERE faculties.faculty_name = 'Computer Science' AND departments.department_name != 'Software Development' AND groups.curator_id IS NULL;
+
+SELECT DISTINCT building_id
+FROM buildings
+UNION
+SELECT DISTINCT building_id
+FROM rooms
+UNION
+SELECT DISTINCT building_id
+FROM departments;
+
+
+
+
+
+SELECT DISTINCT timetable.weekday
+FROM timetable
+JOIN rooms ON rooms.room_id = timetable.room_id
+WHERE (rooms.room_name = 'A311' OR rooms.room_name = 'A104') AND rooms.building_id = 6;
